@@ -38,3 +38,24 @@ def getVenuePicture(venueId):
             return 'https://doc-0s-1k-docs.googleusercontent.com/docs/securesc/ha0ro937gcuc7l7deffksulhg5h7mbp1/l05jvvf8tsrtagddeheq3tev685asuie/1551045600000/11804516247872681719/*/1PktSHS6Hz_TTkvVybb3bXZrfzMKjYnzl'
     else:
         return "Error code %s.\n %s" % (results['meta']['code'], results['meta']['errorDetail'])
+
+def findARestaurant(mealType, location):
+    coord = getGeocodeLocation(location)
+    coordString = '{},{}'.format(coord['lat'], coord['lng'])
+    restaurant = getRestaurant(mealType, coordString)
+    picture = getVenuePicture(restaurant['id'])
+    try:
+        if 'name' in restaurant:
+            print 'Restaurant Name: %s' % restaurant['name']
+            if 'address' in restaurant:
+                print 'Restaurant Address: %s' % restaurant['location']['address']
+            elif len(restaurant['location']['formattedAddress']) > 0:
+                print 'Restaurant Address: %s' % restaurant['location']['formattedAddress'][0]
+            else:
+                print 'Restaurant Address unavailable.'
+            print 'Image: %s' % picture
+            print '\n'
+        else:
+            print 'Somenthing when wrong. Unable to find a restaurant.\n'
+    except Exception as e:
+        print 'Error while processing your request.\n'
