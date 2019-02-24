@@ -16,8 +16,20 @@ def getGeocodeLocation(address):
              }
     r = requests.get(url, params=params)
     results = r.json()
-    if results['status'] == 'OK':
-        location = results['results'][0]['geometry']['location']
-        return location
-    else:
-        return results['status']
+    location = results['results'][0]['geometry']['location']
+    return location
+
+def getRestaurant(mealType, latLon):
+    url = 'https://api.foursquare.com/v2/venues/search?'
+    params = {
+                'client_id': config.foursquare_client_id,
+                'client_secret': config.foursquare_secret,
+                'v': 20180323,
+                'intent': 'browse',
+                'radius': 50000,
+                'll': latLon,
+                'query': mealType
+             }
+    r = requests.get(url, params=params)
+    results = r.json()
+    print results
