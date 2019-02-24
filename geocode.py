@@ -11,8 +11,11 @@ def getGeocodeLocation(address):
              }
     r = requests.get(url, params=params)
     results = r.json()
-    if results['status'] == 'OK':
-        location = results['results'][0]['geometry']['location']
-        return location
+    if results['meta']['code'] == 200:
+        venues = results['response']['venues'][0]
+        if len(venues) > 0:
+            return results['response']['venues'][0]
+        else:
+            return 'No restaurants available.'
     else:
-        return results['status']
+        return "Error code %s.\n %s" % (results['meta']['code'], results['meta']['errorDetail'])
