@@ -9,9 +9,9 @@ Base = declarative_base()
 class Restaurant(Base):
     __tablename__ = 'restaurant'
     id = Column(Integer, primary_key=True)
-    name = Column(String(150), nullable=False)
-    address = Column(String(250))
-    image = Column(String(250))
+    name = Column(String, nullable=False)
+    address = Column(String)
+    image = Column(String)
 
     @property
     def serialize(self):
