@@ -1,4 +1,4 @@
-import sys
+# -*- coding: utf-8 -*-
 from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
@@ -22,6 +22,6 @@ class Restaurant(Base):
             'image': self.image
         }
 
-engine = create_engine('sqlite://restaurants.db')
+engine = create_engine('sqlite:///restaurants.db')
 
 Base.metadata.create_all(engine)
