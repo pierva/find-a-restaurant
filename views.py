@@ -27,7 +27,12 @@ def all_restaurants_handler():
 
 @app.route('/restaurants/<int:id>', methods = ['GET','PUT', 'DELETE'])
 def restaurant_handler(id):
-    return 'Restaurant # {}'.format(id)
+    if request.method == 'GET':
+        return getRestaurant(id)
+    elif request.method == 'PUT':
+        return
+    elif request.method == 'DELETE':
+        return
 
 
 def getAllRestaurants():
@@ -44,7 +49,17 @@ def createNewRestaurant(name, address, image):
         session.commit()
         return jsonify(Restaurant=restaurant.serialize)
     except Exception as e:
-        return jsonify(Error= {'code': 500}) 
+        return jsonify(Error= {'code': 500})
+
+def getRestaurant(id):
+    try:
+        restaurant = session.query(Restaurant).filter_by(id = id).one()
+        return jsonify(restaurant=restaurant.serialize)
+    except Exception as e:
+        return jsonify(Error= {
+            'code': 404,
+            'description': 'No restaurant found'
+            })
 
 
 if __name__ == '__main__':
