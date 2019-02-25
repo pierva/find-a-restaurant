@@ -76,6 +76,16 @@ def updateRestaurant(id, name, address, image):
     except Exception as e:
         return jsonify(Error= {'code': 500})
 
+def deleteRestaurant(id):
+    try:
+        restaurant = session.query(Restaurant).filter_by(id=id)
+        session.delete(restaurant)
+        session.commit()
+    except Exception as e:
+        return jsonify({'code': 200,
+            'description': 'restaurant {} deleted'.format(id)
+            })
+
 if __name__ == '__main__':
     app.debug = True
     app.run(host='0.0.0.0', port=5000)
