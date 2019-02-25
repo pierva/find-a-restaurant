@@ -31,9 +31,9 @@ def restaurant_handler(id):
     if request.method == 'GET':
         return getRestaurant(id)
     elif request.method == 'PUT':
-        name = request.args.get('name', '')
-        address = request.args.get('address', '')
-        image = request.args.get('image', '')
+        name = request.args.get('name')
+        address = request.args.get('address')
+        image = request.args.get('image')
         return updateRestaurant(id, name, address, image)
     elif request.method == 'DELETE':
         return deleteRestaurant(id)
@@ -45,7 +45,7 @@ def getAllRestaurants():
         restaurants = session.query(Restaurant).all()
         return jsonify(restaurants=[i.serialize for i in restaurants])
     except Exception as e:
-        return jsonify(Error= {'code': 500})
+        return jsonify({'error': 500, 'description': e})
 
 def createNewRestaurant(mealType, location):
     try:
@@ -59,11 +59,11 @@ def createNewRestaurant(mealType, location):
                 )
             session.add(newRestaurant)
             session.commit()
-            return jsonify(restaurant=restaurant.serialize)
+            return jsonify(newRestaurant.serialize)
         else:
             return jsonify({"error":"No Restaurants Found for %s in %s" % (mealType, location)})
     except Exception as e:
-        return jsonify(Error= {'code': 500})
+        return jsonify({'error': 500, 'description': e})
 
 def getRestaurant(id):
     try:
@@ -79,29 +79,33 @@ def getRestaurant(id):
 def updateRestaurant(id, name, address, image):
     try:
         session = DBSession()
-        restaurant = session.query(Restaurant).filter_by(id=id)
-        if not name:
+        restaurant = session.query(Restaurant).filter_by(id=id).one()
+        if name:
             restaurant.name = name
-        if not address:
+        if address:
             restaurant.address = address
-        if not image:
+        if image:
             restaurant.image = image
-            session.add(restaurant)
-            session.commit()
-        return jsonify(restaurant=restaurant.serialize)
+        session.add(restaurant)
+        session.commit()
+        return jsonify(restaurant.serialize)
     except Exception as e:
-        return jsonify({'error': 500})
+        return jsonify({'error': 500, 'description': e})
 
 def deleteRestaurant(id):
     try:
         session = DBSession()
-        restaurant = session.query(Restaurant).filter_by(id=id)
+        restaurant = session.query(Restaurant).filter_by(id=id).one()
         session.delete(restaurant)
         session.commit()
-        return jsonify({'status': 200, 'description': 'Restaurant deleted.'})
+        return jsonify({
+                'status': 200,
+                'description': 'Restaurant {} deleted.'.format(id)
+            })
     except Exception as e:
         return jsonify({'error': 500,
-            'description': 'Unable to delete restaurant {}'.format(id)
+            'description': 'Unable to delete restaurant {}'.format(id),
+            'message': str(e)
             })
 
 if __name__ == '__main__':
