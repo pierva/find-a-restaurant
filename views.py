@@ -30,7 +30,7 @@ def restaurant_handler(id):
     if request.method == 'GET':
         return getRestaurant(id)
     elif request.method == 'PUT':
-        return
+        return updateRestaurant(id)
     elif request.method == 'DELETE':
         return
 
@@ -61,6 +61,20 @@ def getRestaurant(id):
             'description': 'No restaurant found'
             })
 
+def updateRestaurant(id, name, address, image):
+    try:
+        restaurant = session.query(Restaurant).filter_by(id=id)
+        if not name:
+            restaurant.name = name
+        if not address:
+            restaurant.address = address
+        if not image:
+            restaurant.image = image
+            session.add(restaurant)
+            session.commit()
+        return jsonify(Restaurant=restaurant.serialize)
+    except Exception as e:
+        return jsonify(Error= {'code': 500})
 
 if __name__ == '__main__':
     app.debug = True
