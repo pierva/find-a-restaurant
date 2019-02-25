@@ -58,17 +58,20 @@ def findARestaurant(mealType, location):
     picture = getVenuePicture(restaurant['id'])
     try:
         if 'name' in restaurant:
-            print 'Restaurant Name: %s' % restaurant['name']
+            restaurant_name = restaurant['name']
             if 'address' in restaurant:
-                print 'Restaurant Address: %s' % restaurant['location']['address']
+                restaurant_address = restaurant['location']['address']
             elif len(restaurant['location']['formattedAddress']) > 0:
-                print 'Restaurant Address: %s' % restaurant['location']['formattedAddress'][0]
+                restaurant_address = restaurant['location']['formattedAddress'][0]
             else:
-                print 'Restaurant Address unavailable.'
-            print 'Image: %s' % picture
-            print '\n'
+                restaurant_address = 'Restaurant Address unavailable.'
+            return {
+                    'name': restaurant_name,
+                    'address': restaurant_address,
+                    'image': picture
+                   }
         else:
-            print 'Somenthing when wrong. Unable to find a restaurant.\n'
+            return 'Somenthing when wrong. Unable to find a restaurant.\n'
     except Exception as e:
         print 'Error while processing your request.\n'
 
