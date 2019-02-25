@@ -36,14 +36,14 @@ def restaurant_handler(id):
         image = request.args.get('image', '')
         return updateRestaurant(id, name, address, image)
     elif request.method == 'DELETE':
-        return
+        return deleteRestaurant(id)
 
 
 def getAllRestaurants():
     try:
         session = DBSession()
         restaurants = session.query(Restaurant).all()
-        return jsonify(Restaurants=[i.serialize for i in restaurants])
+        return jsonify(restaurants=[i.serialize for i in restaurants])
     except Exception as e:
         return jsonify(Error= {'code': 500})
 
@@ -59,7 +59,7 @@ def createNewRestaurant(mealType, location):
                 )
             session.add(newRestaurant)
             session.commit()
-            return jsonify(Restaurant=restaurant.serialize)
+            return jsonify(restaurant=restaurant.serialize)
         else:
             return jsonify({"error":"No Restaurants Found for %s in %s" % (mealType, location)})
     except Exception as e:
