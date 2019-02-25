@@ -72,9 +72,9 @@ def findARestaurant(mealType, location):
                              }
             return restaurantInfo
         else:
-            return 'Somenthing when wrong. Unable to find a restaurant.\n'
+            return 'Unable to find a restaurant.'
     except Exception as e:
-        print 'Error while processing your request.\n'
+        return 'Error while processing your request.'
 
 if __name__ == '__main__':
 	findARestaurant("Pizza", "Tokyo, Japan")
