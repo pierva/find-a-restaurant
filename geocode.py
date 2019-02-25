@@ -59,3 +59,14 @@ def findARestaurant(mealType, location):
             print 'Somenthing when wrong. Unable to find a restaurant.\n'
     except Exception as e:
         print 'Error while processing your request.\n'
+
+if __name__ == '__main__':
+	findARestaurant("Pizza", "Tokyo, Japan")
+	findARestaurant("Tacos", "Jakarta, Indonesia")
+	findARestaurant("Tapas", "Maputo, Mozambique")
+	findARestaurant("Falafel", "Cairo, Egypt")
+	findARestaurant("Spaghetti", "New Delhi, India")
+	findARestaurant("Cappuccino", "Geneva, Switzerland")
+	findARestaurant("Sushi", "Los Angeles, California")
+	findARestaurant("Steak", "La Paz, Bolivia")
+	findARestaurant("Gyros", "Sydney, Australia")
