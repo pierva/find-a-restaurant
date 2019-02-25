@@ -98,7 +98,7 @@ def deleteRestaurant(id):
         restaurant = session.query(Restaurant).filter_by(id=id)
         session.delete(restaurant)
         session.commit()
-        return "Restaurant deleted."
+        return jsonify({'status': 200, 'description': 'Restaurant deleted.'})
     except Exception as e:
         return jsonify({'error': 500,
             'description': 'Unable to delete restaurant {}'.format(id)
